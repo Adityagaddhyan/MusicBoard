@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MusicBoard</title>
+<!-- Load the Paper.js library -->
+<script type="text/javascript" src="js/paper-full.min.js"></script>
+<script type="text/javascript" src="js/howler.min.js"></script>
+<!-- Define inlined PaperScript associate it with myCanvas -->
+<link rel="stylesheet" href="style.css">
+<script type="text/paperscript" canvas="myCanvas" >
+    <!-- //array that store all the circle created by key press and pass onto onFrame event handler for aniimation -->
+    var soundList=["bubbles.mp3","flash-2.mp3","  piston-2.mp3","squiggle.mp3", "wipe.mp3","clay.mp3","flash-3.mp3","piston-3.mp3","strike.mp3", "zig-zag.mp3","confetti.mp3","glimmer.mp3","prism-1.mp3","suspension.mp3","corona.mp3","moon.","prism-2.mp3","timer.mp3","dotted-spiral.mp3","pinwheel.mp3","prism-3.mp3","ufo.mp3","flash-1.mp3","piston-1.mp3","splits.mp3","  veil.mp3"];
+    var circles=[];
+    var colors=["4d9de0","e15554","e1bc29","3bb273","7768ae","321325","5f0f40","9a031e","cb793a","fcdc4d","072ac8","1e96fc","a2d6f9","fcf300","ffc600","541388","d90368","f1e9da","2e294e","ffd400","ca61c3","ee85b5","fc9e4f","432534","79c99e","DDFFF7"];
+    var sounds=[];
+    for(var i=0;i<26;i++){
+        sounds[i]=new Howl({
+            src: ['sounds/sounds/'+soundList[i]]
+    
+        });
+    }
+    
+    function onKeyDown(event) {
+        <!--    get the ascii of the key pressed and reduce it by 97 and then the index will specify the colour in array? -->
+        index=event.key.charCodeAt(0) - 97;
+        var maxPoint=new Point(view.size.width,view.size.height);
+        var randomPoint=Point.random();
+        var point=randomPoint*maxPoint;
+        var myCircle = new Path.Circle(point, Math.random()*300+200);
+        myCircle.fillColor = "#"+colors[index];
+        circles.push(myCircle);
+        sounds[index].play();
+        
+        
+    }
+    function onFrame(event){
+        for(var i=0;i<circles.length;i++){
+            circles[i].scale(0.9);
+            circles[i].fillColor.hue+=1;
+        }
+    }
+</script>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+</body>
+</html>
